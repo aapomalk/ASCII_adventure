@@ -1,0 +1,109 @@
+commands:
+	left
+	right
+	stop
+	wait
+	jump
+	grab
+	grabLadder
+	drop
+	up
+	down
+	shoot
+	use
+
+left:
+	move to left (or turn to left)
+	syntax: left_amount_velocity
+	amount is integer (could also be negative -> walking backwards)
+	amount can also be "inf" -> infinity - moves until hits a wall (or
+	       something that the player can interact with, e.g. ladder)
+	velocity is integer (between 1 and 10)
+	the unit of velocity is 0.1 squares / time unit
+	    -> 1 means that it takes 10 time units for one square,
+	    and 10 means that it takes 1 time units for one square
+
+right:
+	similar as left
+
+stop:
+	stops the movement
+	cancels left/right before jump
+
+wait:
+	waits in the current state for x time
+	if moving -> causes stop (unless in air)
+	syntax: wait_amount
+	amount is positive integer
+
+jump:
+	jump up
+	if done while moving (last command is left or right) then jump is
+	   also moving (see stop)
+	syntax: jump_height
+	height is positive integer (between 1 and 5)
+	stops at the highest point of trajectory and/or if possibility to
+	      interact
+	to synchronize the jump and walking:
+	   to jump 1 up takes 3 time units
+	   jump 2 up takes 6 time units
+	   3 up takes 8
+	   4 up takes 9, and
+	   5 up takes 10 time units
+	falling takes the same time, but after falling 5, one more comes in one
+		time unit (e.g. 6 down takes 11 time units)
+
+grab:
+	grab ladder or weapon
+	syntax: grab_handNumber
+	if the handNumber (1 or 2) holds another item or ladder
+	   -> drop happens at the same time
+	if there is item and ladder at the same square the item is grabbed
+	if one wants to grab the ladder instead then grabLadder must be used
+
+grabLadder
+	syntax: grabLadder_handNumber
+	if requires dropping an item but there is already an item in the same
+	square -> nothing happens
+
+drop:
+	release the grab
+	syntax: drop_handNumber
+	handNumber is either 1 or 2
+	drop for weapon cannot be used when another weapon is in the same square
+
+weapon and ladder and possibly other items:
+        there can be only one item at one square
+	-> the items can pile up
+	ladder is always behind
+	if there is an item 
+
+up:
+	moves up the ladder
+	syntax: up_amount_velocity
+	see left
+
+down:
+	same as up, but moves down the ladder
+
+shoot:
+	shoots the weapon
+	syntax: shoot_upAmount_sideAmount_handNumber
+	upAmount and sideAmount define the highest point of trajectory
+	the limits differ with each weapon
+	for some weapons the amounts work as an aiming point
+	handNumber defines which weapon to use (one can carry two weapons max)
+
+use:
+	uses the item in hand
+	syntax: use_handNumber
+	different effects for different items
+
+enemies:
+	there are several different enemies
+	not moving and moving
+	attacking and not attacking
+	small and large
+	ones that you can destroy and ones you can't
+	ones that create other enemies
+	intelligent and stupid
