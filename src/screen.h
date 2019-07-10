@@ -4,10 +4,11 @@
 
 #include <vector>
 #include "square.h"
+#include "AsciiOutput.h"
 
 using std::vector;
 
-class Screen {
+class Screen : public AsciiOutput {
  protected:
   int width;
   int height;
@@ -15,9 +16,11 @@ class Screen {
   
  public:
   Screen(int width = 10, int height = 10, Square sq = {});
+  int get_width();
+  int get_height();
   Square& get_square(int x, int y);
-  void clear() const;
-  void print() const;
+  virtual void clear() const;
+  virtual void print() const;
 };
 
 #endif

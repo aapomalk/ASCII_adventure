@@ -12,8 +12,16 @@ using std::flush;
 Screen::Screen(int width, int height, Square sq)
   : width{width}, height{height},
     screen(height, vector<Square>(width, sq)) {
- 
- }
+	  
+}
+
+int Screen::get_width() {
+  return this->width;
+}
+
+int Screen::get_height() {
+  return this->height;
+}
   
 Square& Screen::get_square(int x, int y) {
   return this->screen.at(y).at(x);
