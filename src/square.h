@@ -8,15 +8,12 @@ using std::string;
 
 class Square {
  protected:
-  int x;
-  int y;
   char c;
   string before; // the ansi escapes
   string after; // return to normal
 
  public:
-  void set_x(int x);
-  void set_y(int y);
+  Square(char c = ' ', string before = "", string after = "\u001b[0m");
   void set_c(char c);
   void set_b(string b);
   string get_b() const;

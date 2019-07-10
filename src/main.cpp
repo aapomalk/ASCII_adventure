@@ -4,6 +4,7 @@
 #include <thread>
 #include <string>
 #include "square.h"
+#include "screen.h"
 
 using std::vector;
 using std::cout;
@@ -32,28 +33,17 @@ void print(vector<vector<Square>> squares) {
 }
 
 int main() {
-  vector<vector<Square>> squares;
-  Square x;
-  x.set_a("\u001b[0m");
-  x.set_c('X');
-  for (int i=0; i<10; i++) {
-    vector<Square> temp;
-    for (int j=0; j<10; j++) {
-      Square square {x};
-      temp.push_back(square);
-    }
-    squares.push_back(temp);
-  }
+  Screen squares {20, 10, Square('X')};
 
   for (int i=0; i<10; i++) {
     for (int j=0; j<10; j++) {
-      string temp = squares.at(i).at(j).get_b();
-      squares.at(i).at(j).set_b(temp+"\u001b[43m");
-      temp = squares.at(9-j).at(9-i).get_b();
-      squares.at(9-j).at(9-i).set_b(temp+"\u001b[36;1m");
-      print(squares);
+      squares.print();
+      string temp = squares.get_square(i,j).get_b();
+      squares.get_square(i,j).set_b(temp+"\u001b[43m");
+      temp = squares.get_square(9-j,9-i).get_b();
+      squares.get_square(9-j,9-i).set_b(temp+"\u001b[36;1m");
       sleep(100);
-      clear(10);
+      squares.clear();
     }
   }
   return 0;

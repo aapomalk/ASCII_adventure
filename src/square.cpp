@@ -5,12 +5,8 @@
 using std::string;
 using std::cout;
 
-void Square::set_x(int x) {
-  this->x = x;
-}
-
-void Square::set_y(int y) {
-  this->y = y;
+Square::Square(char c, string before, string after)
+  : c{c}, before{before}, after{after} {
 }
 
 void Square::set_c(char c) {
