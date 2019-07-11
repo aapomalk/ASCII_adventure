@@ -2,10 +2,14 @@
 #include "Rubic.h"
 #include "screen.h"
 #include <iostream>
+#include <string>
+#include <sstream>
 
 using std::vector;
 using std::cout;
 using std::endl;
+using std::string;
+using std::stoi;
 
 Amount mirror(Amount a) {
   switch (a) {
@@ -53,6 +57,10 @@ void Rubic::update() {
 }
 
 void Rubic::single_turn(Axis a, Amount t, int position) {
+  if (position < 0 || position >= this->size) {
+    cout << position << endl;
+    return;
+  }
   if (position == 0) {
 	switch (a) {
 	case A1: turn_side_clockwise(S1, t); break;
@@ -148,7 +156,7 @@ void Rubic::turn_side_clockwise(Side s, Amount t) {
   }
 }
 
-void Rubic::turn(Turn t) {
+void Rubic::turn(const SimpleTurn &t) {
   for (int i=t.get_ps(); i<=t.get_pe(); i++) {
 	this->single_turn(t.get_a(), t.get_t(), i);
   }

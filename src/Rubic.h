@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "screen.h"
+#include <iostream>
 
 using std::vector;
 using std::string;
@@ -12,18 +13,20 @@ using std::string;
 enum Side {S1,S2,S3,S4,S5,S6};
 enum Amount {T1,T2,T3};
 enum Axis {A1,A2,A3};
-class Turn {
+class SimpleTurn {
   Axis a;
   Amount t;
-  int &p_start;
-  int &p_end;
+  int p_start;
+  int p_end;
  public:
- Turn(Axis a, Amount t, int &p_start, int &p_end)
+ SimpleTurn(Axis a, Amount t, int p_start = 0, int p_end = 0)
    : a{a}, t{t}, p_start{p_start}, p_end{p_end} {}
-  Axis get_a() {return a;}
-  Amount get_t() {return t;}
-  int get_ps() {return p_start;}
-  int get_pe() {return p_end;}
+  virtual Axis get_a() const {return a;}
+  virtual Amount get_t() const {return t;}
+  virtual int get_ps() const {return p_start;}
+  virtual int get_pe() const {return p_end;}
+  virtual void set_ps(int i) {p_start = i;}
+  virtual void set_pe(int i) {p_end = i;}
 };
 Amount mirror(Amount a);
 
@@ -48,7 +51,7 @@ class Rubic {
  public:
   Rubic(Screen& screen, int size);
  void update();
- void turn(Turn t);
+ void turn(const SimpleTurn &t);
 };
 
 #endif

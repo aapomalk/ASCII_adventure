@@ -9,6 +9,7 @@
 #include "screen.h"
 #include "AsciiOutput.h"
 #include "Rubic.h"
+#include "TurnSequence.h"
 
 using std::vector;
 using std::cout;
@@ -50,19 +51,47 @@ int main(int argc, char **argv) {
   Rubic cube {squares, size};
 
   cube.update();
-  int start = 0;
-  int end = 0;
-  while (true) {
-	output.print();
-	Axis a = Axis(rand() % 3);
-	Amount t = Amount(rand() % 3);
-	start = rand() % size;
-	end = start;
-	cube.turn(Turn{a, t, start, end});
-	cube.update();
-	sleep(200);
-	output.clear();
+  // int start = 0;
+  // int end = 0;
+  // for (int i=0; i<30; i++) {
+  // 	output.print();
+  // 	Axis a = Axis(rand() % 3);
+  // 	Amount t = Amount(rand() % 3);
+  // 	start = rand() % size;
+  // 	end = start + (rand() % (size - start));
+  // 	cube.turn(Turn{a, t, start, end});
+  // 	cube.update();
+  // 	sleep(100);
+  // 	output.clear();
+  // }
+
+  TurnSequence basic {};
+  vector<int> arr(6);
+  arr.at(0) = arr.at(1) = arr.at(4) = arr.at(5) = 0;
+  arr.at(2) = arr.at(3) = 2;
+  basic.set_arr(arr);
+  SimpleTurn temp = SimpleTurn{A2, T1};
+  basic.add_Turnable(temp);
+  temp = SimpleTurn{A3, T3};
+  basic.add_Turnable(temp);
+  temp = SimpleTurn{A1, T3};
+  basic.add_Turnable(temp);
+  temp = SimpleTurn{A3, T1};
+  basic.add_Turnable(temp);
+  temp = SimpleTurn{A1, T1};
+  basic.add_Turnable(temp);
+  temp = SimpleTurn{A2, T3};
+  basic.add_Turnable(temp);
+  
+
+  for (int i=0; i<basic.size(); i++) {
+    output.print();
+    cube.turn(basic.get(i));
+    cube.update();
+    sleep(3000);
+    output.clear();
   }
+  output.print();
   // for (int i=0; i<10; i++) {
   //   for (int j=0; j<10; j++) {
   //     output.print();
