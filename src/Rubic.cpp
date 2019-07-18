@@ -11,6 +11,20 @@ using std::endl;
 using std::string;
 using std::stoi;
 
+std::istream& SimpleTurn::streamIn(std::istream &in) {
+  int value {0};
+  in >> value;
+  Axis a = static_cast<Axis>(value);
+  in >> value;
+  Amount t = static_cast<Amount>(value);
+  int p_start {0};
+  in >> p_start;
+  int p_end {p_start};
+  in >> p_end;
+  (*this) = {a, t, p_start, p_end};
+  return in;
+}
+
 Amount mirror(Amount a) {
   switch (a) {
   case T1: return T3;

@@ -14,6 +14,7 @@
 using std::vector;
 using std::cout;
 using std::endl;
+using std::cin;
 using std::flush;
 using std::string;
 
@@ -70,18 +71,12 @@ int main(int argc, char **argv) {
   arr.at(0) = arr.at(1) = arr.at(4) = arr.at(5) = 0;
   arr.at(2) = arr.at(3) = 2;
   basic.set_arr(arr);
-  SimpleTurn temp = SimpleTurn{A2, T1};
-  basic.add_Turnable(temp);
-  temp = SimpleTurn{A3, T3};
-  basic.add_Turnable(temp);
-  temp = SimpleTurn{A1, T3};
-  basic.add_Turnable(temp);
-  temp = SimpleTurn{A3, T1};
-  basic.add_Turnable(temp);
-  temp = SimpleTurn{A1, T1};
-  basic.add_Turnable(temp);
-  temp = SimpleTurn{A2, T3};
-  basic.add_Turnable(temp);
+  cout << "give 6 turns: ";
+  SimpleTurn temp {A1, T1};
+  for (int i=0; i<6; i++) {
+    cin >> temp;
+    basic.add_Turnable(temp);
+  }
   
 
   for (int i=0; i<basic.size(); i++) {

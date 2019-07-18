@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "screen.h"
+#include "InStreamable.h"
 #include <iostream>
 
 using std::vector;
@@ -13,7 +14,7 @@ using std::string;
 enum Side {S1,S2,S3,S4,S5,S6};
 enum Amount {T1,T2,T3};
 enum Axis {A1,A2,A3};
-class SimpleTurn {
+class SimpleTurn : public InStreamable {
   Axis a;
   Amount t;
   int p_start;
@@ -27,6 +28,7 @@ class SimpleTurn {
   virtual int get_pe() const {return p_end;}
   virtual void set_ps(int i) {p_start = i;}
   virtual void set_pe(int i) {p_end = i;}
+  virtual std::istream& streamIn(std::istream &in) override;
 };
 Amount mirror(Amount a);
 
