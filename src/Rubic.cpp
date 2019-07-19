@@ -25,7 +25,20 @@ std::istream& SimpleTurn::streamIn(std::istream &in) {
   return in;
 }
 
-Amount mirror(Amount a) {
+SimpleTurn SimpleTurn::mirror(int size) const {
+  if (this->a == A1 || this->a == A3) {
+    return SimpleTurn{this->a, mirror_amount(this->t), p_start, p_end};
+  } else {
+    return SimpleTurn{this->a, this->t, size - this->p_end - 1,
+	size - this->p_start - 1};
+  }
+}
+
+SimpleTurn SimpleTurn::reverse() const {
+  return SimpleTurn{this->a, mirror_amount(this->t), p_start, p_end};
+}
+
+Amount mirror_amount(Amount a) {
   switch (a) {
   case T1: return T3;
   case T2: return T2;
@@ -83,9 +96,9 @@ void Rubic::single_turn(Axis a, Amount t, int position) {
 	}
   } else if (position == this->size - 1) {
 	switch (a) {
-	case A1: turn_side_clockwise(S6, mirror(t)); break;
-	case A2: turn_side_clockwise(S4, mirror(t)); break;
-	case A3: turn_side_clockwise(S5, mirror(t)); break;
+	case A1: turn_side_clockwise(S6, mirror_amount(t)); break;
+	case A2: turn_side_clockwise(S4, mirror_amount(t)); break;
+	case A3: turn_side_clockwise(S5, mirror_amount(t)); break;
 	}
   }
   // "normal" turn (not a whole side)

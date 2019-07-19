@@ -1,0 +1,12 @@
+
+sleep_text 100
+new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
+new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
+new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
+new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
+new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
+new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
+new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
+sleep_text 500
+
+end_file

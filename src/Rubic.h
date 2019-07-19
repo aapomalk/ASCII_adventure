@@ -22,15 +22,17 @@ class SimpleTurn : public InStreamable {
  public:
  SimpleTurn(Axis a, Amount t, int p_start = 0, int p_end = 0)
    : a{a}, t{t}, p_start{p_start}, p_end{p_end} {}
-  virtual Axis get_a() const {return a;}
-  virtual Amount get_t() const {return t;}
-  virtual int get_ps() const {return p_start;}
-  virtual int get_pe() const {return p_end;}
-  virtual void set_ps(int i) {p_start = i;}
-  virtual void set_pe(int i) {p_end = i;}
+  Axis get_a() const {return a;}
+  Amount get_t() const {return t;}
+  int get_ps() const {return p_start;}
+  int get_pe() const {return p_end;}
+  void set_ps(int i) {p_start = i;}
+  void set_pe(int i) {p_end = i;}
   virtual std::istream& streamIn(std::istream &in) override;
+  SimpleTurn mirror(int) const;
+  SimpleTurn reverse() const;
 };
-Amount mirror(Amount a);
+Amount mirror_amount(Amount a);
 
 class Rubic {
  private:
@@ -54,6 +56,7 @@ class Rubic {
   Rubic(Screen& screen, int size);
  void update();
  void turn(const SimpleTurn &t);
+ int get_size() {return size;}
 };
 
 #endif
