@@ -1,12 +1,13 @@
 
 sleep_text 100
+
 new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
-new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
-new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
-new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
-new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
-new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
-new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
+new_many_sequences rotate_middles
+add_many_sequences rotate_middles reverse mirror basic
+add_many_sequences rotate_middles basic
+
+new_sequence rotate_middles 7  1 2 1 1  0 0 0 0  1 0 1 1  0 1 0 0  1 2 1 1  0 0 0 0  1 0 1 1
+
 sleep_text 500
 
 end_file

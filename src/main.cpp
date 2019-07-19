@@ -12,6 +12,7 @@
 #include "AsciiOutput.h"
 #include "Rubic.h"
 #include "TurnSequence.h"
+#include "TurnSequences.h"
 #include <memory>
 
 using std::vector;
@@ -96,6 +97,7 @@ vector<int> get_arr() {
 
 int main(int argc, char **argv) {
   std::map<string, TurnSequence> memory;
+  std::map<string, TurnSequences> memory2;
   srand(time(NULL));
   int sleep_text = 500;
   int sleep_turn = 100;
@@ -126,6 +128,7 @@ int main(int argc, char **argv) {
     Turnable *temp = &vec;
 
     TurnSequence seq;
+	TurnSequences seqs;
     if (file) {
       cout << file_command_id++;
     }
@@ -166,6 +169,42 @@ int main(int argc, char **argv) {
       string name;
       cin >> name;
       memory[name].set_arr(get_arr());
+	} else if (command == "new_many_sequences") {
+	  string name;
+	  cin >> name;
+	  if (name == "reverse" || name == "mirror") {
+		cout << "reserved name" << endl;
+	  } else {
+	    memory2[name] = seqs;
+	  }
+	} else if (command == "add_many_sequences") {
+	  string name;
+	  cin >> name;
+	  string name2;
+	  cin >> name2;
+	  if (name2 == "reverse") {
+		reverse = true;
+		cin >> name2;
+	  }
+	  if (name2 == "mirror") {
+		mirror = true;
+		cin >> name2;
+	  }
+	  memory2[name].add_TurnSequence(memory[name2], reverse, mirror,
+									 cube.get_size());
+    } else if (command == "many_sequences") {
+      string name;
+      cin >> name;
+      if (name == "reverse") {
+	reverse = true;
+	cin >> name;
+      }
+      if (name == "mirror") {
+	mirror = true;
+	cin >> name;
+      }
+      temp = &(memory2[name]);
+      referencing = true;
     } else if (command == "shuffle") {
       vec.turns = get_shuffle(cube);
       temp = &vec;
