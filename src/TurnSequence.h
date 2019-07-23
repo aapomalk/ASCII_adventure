@@ -20,14 +20,16 @@ struct TurnVector : public Turnable {
 };
 
 class TurnSequence : public Turnable {
-  vector<int> starts_and_ends;
+  array<int, num_of_sides> starts_and_ends;
   vector<SimpleTurn> turns;
   SimpleTurn update_turn(const SimpleTurn &t) const;
   void update_turns();
   bool update_arr(const SimpleTurn &t);
  public:
- TurnSequence() : starts_and_ends(6, 0) {}
-  void set_arr(const vector<int> &arr);
+ TurnSequence() {
+    starts_and_ends.fill(0);
+  }
+  void set_arr(const array<int, num_of_sides> &arr);
   void add_Turnable(SimpleTurn t);
   void add_Turnables(const vector<SimpleTurn> &ts);
   virtual SimpleTurn get(int i) const override {return turns.at(i);}

@@ -4,13 +4,9 @@
 #include <vector>
 #include <iostream>
 
-void TurnSequence::set_arr(const vector<int> &arr) {
-  for (size_t i=0; i<6 && i<arr.size(); i++) {
-    if (i<starts_and_ends.size()) {
-      starts_and_ends.at(i) = arr.at(i);
-    } else {
-      starts_and_ends.push_back(arr.at(i));
-    }
+void TurnSequence::set_arr(const array<int, num_of_sides> &arr) {
+  for (size_t i=0; i<num_of_sides && i<arr.size(); i++) {
+    starts_and_ends.at(i) = arr.at(i);
   }
   this->update_turns();
 }

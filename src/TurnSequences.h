@@ -13,7 +13,9 @@ class TurnSequences : public Turnable {
  public:
   void add_TurnSequence(TurnSequence ts, bool reverse = false,
 						bool mirror = false, int size = 0);
-  void set_arr(int i, const vector<int> &arr) {turns.at(i).set_arr(arr);}
+  void set_arr(int i, const array<int, num_of_sides> &arr) {
+    turns.at(i).set_arr(arr);
+  }
   int number_of_sequences() const {return turns.size();}
   virtual SimpleTurn get(int i) const override;
   virtual int size() const override {return total_size;}

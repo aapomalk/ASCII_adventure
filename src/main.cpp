@@ -85,12 +85,12 @@ vector<SimpleTurn> get_shuffle(Rubic cube) {
   return ret;
 }
 
-vector<int> get_arr() {
-  vector<int> ret;
-  for (int i=0; i<6; i++) {
+array<int, num_of_sides> get_arr() {
+  array<int, num_of_sides> ret;
+  for (int i=0; i<num_of_sides; i++) {
     int temp;
     cin >> temp;
-    ret.push_back(temp);
+    ret[i] = temp;
   }
   return ret;
 }

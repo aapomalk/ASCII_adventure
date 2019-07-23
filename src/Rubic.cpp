@@ -6,6 +6,7 @@
 #include <sstream>
 
 using std::vector;
+using std::array;
 using std::cout;
 using std::endl;
 using std::string;
@@ -48,20 +49,19 @@ Amount mirror_amount(Amount a) {
 }
 
 Rubic::Rubic(Screen &screen, int size)
-  : screen{screen},
-	cube(6, vector<vector<Side>>(size, vector<Side>(size, S1))), copy{cube},
-	size{size}, snake(size*4, vector<int>(3, 0)) {
-	  int i=0;
-	  for (auto &side : cube) {
-		Side s = Side(i);
-		for (auto &x : side) {
-		  for (auto &square : x) {
-			square = s;
-		  }
-		}
-		i++;
+  : screen{screen}, size{size}, snake(size*4, array<int, 3>{}) {
+      cube.fill(vector<vector<Side>>(size, vector<Side>(size, S1)));
+      int i=0;
+      for (auto &side : cube) {
+	Side s = Side(i);
+	for (auto &x : side) {
+	  for (auto &square : x) {
+	    square = s;
 	  }
-	  copy = cube;
+	}
+	i++;
+      }
+      copy = cube;
 }
 
 void Rubic::update() {
@@ -102,7 +102,7 @@ void Rubic::single_turn(Axis a, Amount t, int position) {
 	}
   }
   // "normal" turn (not a whole side)
-  const vector<Side> &order = sides_in_axis.at(a);
+  const array<Side, 4> &order = sides_in_axis.at(a);
   int i=0;
   for (Side s : order) {
 	int start_x,start_y,delta_x,delta_y;
@@ -146,7 +146,7 @@ void Rubic::single_turn(Axis a, Amount t, int position) {
   i=0;
   for (const auto &sn : snake) {
 	int j = (i + size * (t+1)) % snake.size();
-	const vector<int> &sn2 = snake.at(j);
+	const array<int, 3> &sn2 = snake.at(j);
 	const Side copy = this->copy.at(sn.at(0)).at(sn.at(2)).at(sn.at(1));
 	Side &orig = this->cube.at(sn2.at(0)).at(sn2.at(2)).at(sn2.at(1));
 	orig = copy;
