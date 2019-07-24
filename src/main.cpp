@@ -14,6 +14,7 @@
 #include "TurnSequence.h"
 #include "TurnSequences.h"
 #include <memory>
+#include "Find.h"
 
 using std::vector;
 using std::cout;
@@ -139,7 +140,11 @@ int main(int argc, char **argv) {
     if (file) {
       cout << endl;
     }
-    if (command == "turn") {
+    if (command == "//") { // this is basically a comment (in file)
+      string line;
+      getline(cin, line);
+      cout << line;
+    } else if (command == "turn") {
       temp = &vec;
       vec.turns = get_turns();
       referencing = true;

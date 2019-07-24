@@ -1,6 +1,34 @@
 
 sleep_text 100
 
+// building the first layer
+
+// middle moves the middle piece to top when it's facing forward
+new_sequence middle 4  2 0 0 0  0 2 1 1  2 2 0 0  0 0 1 1
+// middle piece can be moved in place with simple turn in other cases
+
+// remove a corner is reverse corner
+new_sequence corner 3  2 0 0 0  0 2 2 2  2 2 0 0
+new_sequence flip_corner 4  2 0 0 0  0 0 2 2  2 2 0 0  0 1 2 2
+new_many_sequences flip_corner
+add_many_sequences flip_corner flip_corner
+add_many_sequences filp_corner corner
+
+
+// second layer
+new_sequence layer2 8  0 0 2 2  1 0 2 2  0 0 2 2  1 2 2 2  0 2 2 2  2 0 0 0  0 2 2 2  2 2 0 0
+
+
+// third layer
+
+new_sequence corners1 2  1 0 2 2  0 0 0 0
+new_sequence corners2 2  1 2 2 2  0 0 0 0
+new_many_sequences corners
+add_many_sequences corners corners1
+add_many_sequences corners mirror corners1
+add_many_sequences corners corners2
+add_many_sequences corners mirror corners2
+
 new_sequence basic 6  1 0 2 2  2 2 0 0  0 2 0 0  2 0 0 0  0 0 0 0  1 2 2 2
 new_many_sequences rotate_middles
 add_many_sequences rotate_middles reverse mirror basic

@@ -60,7 +60,10 @@ class Rubic {
   Rubic(Screen& screen, int size);
  void update();
  void turn(const SimpleTurn &t);
- int get_size() {return size;}
+ int get_size() const {return size;}
+ Side piece(Side s, int posx, int posy) const {
+   return cube.at(s).at(posy).at(posx);
+ }
 };
 
 #endif
