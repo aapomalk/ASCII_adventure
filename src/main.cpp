@@ -15,6 +15,7 @@
 #include "TurnSequences.h"
 #include <memory>
 #include "Find.h"
+#include "AI.h"
 
 using std::vector;
 using std::cout;
@@ -28,8 +29,8 @@ void sleep(int amount) {
   std::this_thread::sleep_for(timespan);
 }
 
-void animate(const Turnable &turns, Rubic &cube, AsciiOutput &output, int t,
-	     bool reverse, bool mirror) {
+void animate(const Turnable &turns, Rubic &cube, AsciiOutput &output,
+	     int sleep_time, bool reverse, bool mirror) {
   if (reverse) {
     for (int i=turns.size(); i>0; i--) {
       SimpleTurn turn = turns.get(i-1);
@@ -37,7 +38,7 @@ void animate(const Turnable &turns, Rubic &cube, AsciiOutput &output, int t,
       if (mirror) turn = turn.mirror(cube.get_size());
       cube.turn(turn);
       cube.update();
-      sleep(t);
+      sleep(sleep_time);
       output.clear();
       output.print();
     }
@@ -49,7 +50,7 @@ void animate(const Turnable &turns, Rubic &cube, AsciiOutput &output, int t,
     if (mirror) turn = turn.mirror(cube.get_size());
     cube.turn(turn);
     cube.update();
-    sleep(t);
+    sleep(sleep_time);
     output.clear();
     output.print();
   }
@@ -168,35 +169,41 @@ int main(int argc, char **argv) {
 	mirror = true;
 	cin >> name;
       }
-      temp = &(memory[name]);
-      referencing = true;
+      if (memory.find(name) != memory.end()) {
+	temp = &(memory[name]);
+	referencing = true;
+      }
     } else if (command == "edit_sequence") {
       string name;
       cin >> name;
-      memory[name].set_arr(get_arr());
-	} else if (command == "new_many_sequences") {
-	  string name;
-	  cin >> name;
-	  if (name == "reverse" || name == "mirror") {
-		cout << "reserved name" << endl;
-	  } else {
-	    memory2[name] = seqs;
-	  }
-	} else if (command == "add_many_sequences") {
-	  string name;
-	  cin >> name;
-	  string name2;
-	  cin >> name2;
-	  if (name2 == "reverse") {
-		reverse = true;
-		cin >> name2;
-	  }
-	  if (name2 == "mirror") {
-		mirror = true;
-		cin >> name2;
-	  }
-	  memory2[name].add_TurnSequence(memory[name2], reverse, mirror,
-									 cube.get_size());
+      if (memory.find(name) != memory.end()) {
+	memory[name].set_arr(get_arr());
+      }
+    } else if (command == "new_many_sequences") {
+      string name;
+      cin >> name;
+      if (name == "reverse" || name == "mirror") {
+	cout << "reserved name" << endl;
+      } else {
+	memory2[name] = seqs;
+      }
+    } else if (command == "add_many_sequences") {
+      string name;
+      cin >> name;
+      string name2;
+      cin >> name2;
+      if (name2 == "reverse") {
+	reverse = true;
+	cin >> name2;
+      }
+      if (name2 == "mirror") {
+	mirror = true;
+	cin >> name2;
+      }
+      if (memory2.find(name) != memory2.end()) {
+	memory2[name].add_TurnSequence(memory[name2], reverse, mirror,
+				       cube.get_size());
+      }
     } else if (command == "many_sequences") {
       string name;
       cin >> name;
@@ -208,8 +215,10 @@ int main(int argc, char **argv) {
 	mirror = true;
 	cin >> name;
       }
-      temp = &(memory2[name]);
-      referencing = true;
+      if (memory2.find(name) != memory2.end()) {
+	temp = &(memory2[name]);
+	referencing = true;
+      }
     } else if (command == "shuffle") {
       vec.turns = get_shuffle(cube);
       temp = &vec;
@@ -239,6 +248,16 @@ int main(int argc, char **argv) {
     } else if (command == "exit") {
       cout << "exiting" << endl;
       break;
+    } else if (command == "AI_solve_phase") {
+      sleep(sleep_text);
+      clear(1);
+      finish_phase(cube, output, sleep_turn, memory, memory2);
+      continue; // AI animates itself
+    } else if (command == "AI_solve") {
+      sleep(sleep_text);
+      clear(1);
+      finish(cube, output, sleep_turn, memory, memory2);
+      continue; // AI animates itself
     } else {
       cout << " undefined command " << command << flush;
       if (file) {

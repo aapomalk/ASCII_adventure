@@ -42,10 +42,9 @@ class Rubic {
  private:
   const array<string, num_of_sides> colors {"\u001b[41m","\u001b[42m",
 	"\u001b[43m","\u001b[44m","\u001b[45m","\u001b[47m"};
+  // coordinates where to plot the sides
   const array<array<int, 2>, num_of_sides> coordinates = {{
       {1,0},{0,1},{1,1},{2,1},{3,1},{1,2} }};
-  const array<array<Side, 4>, 3> sides_in_axis = {{
-      {S2,S5,S4,S3},{S1,S3,S6,S5},{S1,S4,S6,S2} }};
   Screen& screen;
   array<vector<vector<Side>>, num_of_sides> cube;
   array<vector<vector<Side>>, num_of_sides> copy;
@@ -57,12 +56,14 @@ class Rubic {
   void move_to(Side s, Axis a, Amount t, int x, int y);
   
  public:
+  const array<array<Side, 4>, 3> sides_in_axis = {{
+      {S2,S5,S4,S3},{S1,S3,S6,S5},{S1,S4,S6,S2} }};
   Rubic(Screen& screen, int size);
- void update();
- void turn(const SimpleTurn &t);
- int get_size() const {return size;}
- Side piece(Side s, int posx, int posy) const {
-   return cube.at(s).at(posy).at(posx);
+  void update();
+  void turn(const SimpleTurn &t);
+  int get_size() const {return size;}
+  Side piece(Side s, int posx, int posy) const {
+    return cube.at(s).at(posy).at(posx);
  }
 };
 
