@@ -3,12 +3,22 @@
 #define _FIND_H_
 
 #include "Rubic.h"
+#include <iostream>
 
 struct position {
   Side side;
   int x;
   int y;
+  bool operator==(const position &rhs) {
+    return (this->side == rhs.side && this->x == rhs.x && this->y == rhs.y);
+  }
+  bool operator!=(const position &rhs) {
+    return !(*this == rhs);
+  }
 };
+
+std::ostream& operator<<(std::ostream &os, const position &rhs);
+
 
 // all of these return the position of the color/color1 for first match
 // if xd and yd are both 0 -> corner piece

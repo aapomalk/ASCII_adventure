@@ -17,6 +17,29 @@ struct TurnVector : public Turnable {
   vector<SimpleTurn> turns;
   virtual int size() const override {return turns.size();}
   virtual SimpleTurn get(int i) const override {return turns.at(i);}
+  void addTurnable(const Turnable &t,bool mirror = false,bool reverse = false,
+		   int size = 3) {
+    if (reverse) {
+      for (int i=t.size(); i>0; i--) {
+	SimpleTurn temp = t.get(i-1);
+	if (mirror) {
+	  temp = temp.mirror(size);
+	}
+	if (reverse) {
+	  temp = temp.reverse();
+	}
+	turns.push_back(temp);
+      }
+    } else {
+      for (int i=0; i<t.size(); i++) {
+	SimpleTurn temp = t.get(i);
+	if (mirror) {
+	  temp = temp.mirror(size);
+	}
+	turns.push_back(temp);
+      }
+    }
+  }
 };
 
 class TurnSequence : public Turnable {

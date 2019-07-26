@@ -14,10 +14,10 @@ void animate(const Turnable &turns, Rubic &cube, AsciiOutput &output,
 
 // these need the algorithms to be loaded in memory with correct names
 void finish_phase(Rubic &cube, AsciiOutput &output, int sleep_time,
-		  std::map<string, TurnSequence> memory,
-		  std::map<string, TurnSequences> memory2);
+		  const std::map<string, TurnSequence> &memory,
+		  const std::map<string, TurnSequences> &memory2);
 void finish(Rubic &cube, AsciiOutput &output, int sleep_time,
-	    std::map<string, TurnSequence> memory,
-	    std::map<string, TurnSequences> memory2);
+	    const std::map<string, TurnSequence> &memory,
+	    const std::map<string, TurnSequences> &memory2);
 
 #endif

@@ -1,5 +1,13 @@
 
 #include "Find.h"
+#include <iostream>
+
+using std::cerr;
+
+std::ostream& operator<<(std::ostream &os, const position &rhs) {
+  os << rhs.side << " " << rhs.x << " " << rhs.y;
+  return os;
+}
 
 position find(const Rubic &cube, Side color, int xd, int yd) {
   std::array<int, 4> xs {xd, yd, cube.get_size()-1-xd, cube.get_size()-1-yd};
@@ -14,6 +22,7 @@ position find(const Rubic &cube, Side color, int xd, int yd) {
       }
     }
   }
+  cerr << "position find(const Rubic &cube, Side color, int xd, int yd)";
   throw 0; // this should never be reached
 }
 
@@ -26,6 +35,7 @@ position second(const Rubic &cube, Side current, int x_ix, int zd) {
     case 2: other = S4; break;
     case 3: other = S5; break;
     default:
+      cerr << "first of second";
       throw 0;
     }
     return {other, zd, 0};
@@ -36,6 +46,7 @@ position second(const Rubic &cube, Side current, int x_ix, int zd) {
     case 2: return {S3, 0, cube.get_size()-1-zd};
     case 3: return {S1, 0, cube.get_size()-1-zd};
     default:
+      cerr << "second of second";
       throw 0;
     }
   } else if (current == S3) {
@@ -45,6 +56,7 @@ position second(const Rubic &cube, Side current, int x_ix, int zd) {
     case 2: return {S4, 0, cube.get_size()-1-zd};
     case 3: return {S1, cube.get_size()-1-zd, cube.get_size()-1};
     default:
+      cerr << "third of second";
       throw 0;
     }
   } else if (current == S4) {
@@ -54,6 +66,7 @@ position second(const Rubic &cube, Side current, int x_ix, int zd) {
     case 2: return {S5, 0, cube.get_size()-1-zd};
     case 3: return {S1, cube.get_size()-1, zd};
     default:
+      cerr << "fourth of second";
       throw 0;
     }
   } else if (current == S5) {
@@ -63,6 +76,7 @@ position second(const Rubic &cube, Side current, int x_ix, int zd) {
     case 2: return {S2, 0, cube.get_size()-1-zd};
     case 3: return {S1, zd, 0};
     default:
+      cerr << "fifth of second";
       throw 0;
     }
   } else {
@@ -72,6 +86,7 @@ position second(const Rubic &cube, Side current, int x_ix, int zd) {
     case 2: other = S4; break;
     case 3: other = S3; break;
     default:
+      cerr << "sixth of second";
       throw 0;
     }
     return {other, cube.get_size()-1-zd, cube.get_size()-1};
@@ -94,6 +109,7 @@ position find(const Rubic &cube, Side color1, Side color2, int zd) {
       }
     }
   }
+  cerr << "position find(const Rubic &cube, Side color1, Side color2, int zd)";
   throw 0; // this should never be reached
 }
 
@@ -115,6 +131,7 @@ position find(const Rubic &cube, Side color1, Side color2, Side color3) {
       }
     }
   }
+  cerr << "position find(const Rubic &cube, Side color1, Side color2, Side color3)";
   throw 0; // this should never be reached
 }
 
@@ -129,6 +146,7 @@ Side find_any(const Rubic &cube, Side color) {
       }
     }
   }
+  cerr << "Side find_any(const Rubic &cube, Side color)";
   throw 0; // this should never be reached
 }
 
@@ -154,6 +172,7 @@ bool square_of_one_color(const Rubic &cube, Side color, int d, Side side) {
 	y = d;
 	break;
       default:
+	cerr << "bool square_of_one_color(const Rubic &cube, Side color, int d, Side side)";
 	throw 0;
       }
       for (int k=0; k<num_of_sides; k++) {
@@ -206,6 +225,7 @@ bool layer_finished(const Rubic &cube, int layer, Axis axis) {
 	  y = layer;
 	  x = i;
 	default:
+	  cerr << "bool layer_finished(const Rubic &cube, int layer, Axis axis)";
 	  throw 0;
 	}
       }
