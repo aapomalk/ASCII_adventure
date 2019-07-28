@@ -463,6 +463,18 @@ bool basic_1up2(const Rubic &cube) {
   return (cube.piece(S3, 2, 0) == S6 && cube.piece(S1, 0, 2) == S6 &&
 	  cube.piece(S5, 2, 0) == S6 && cube.piece(S4, 2, 0) == S6);
 }
+bool basic_2up(const Rubic &cube) {
+  return (cube.piece(S1, 0, 0) == S6 && cube.piece(S1, 2, 2) == S6 &&
+	  cube.piece(S3, 0, 0) == S6 && cube.piece(S4, 2, 0) == S6);
+}
+bool basic_0up(const Rubic &cube) {
+  return (cube.piece(S2, 0, 0) == S6 && cube.piece(S2, 2, 0) == S6 &&
+	  cube.piece(S4, 0, 0) == S6 && cube.piece(S4, 2, 0) == S6);
+}
+bool basic_2up2(const Rubic &cube) {
+  return (cube.piece(S1, 0, 0) == S6 && cube.piece(S1, 0, 2) == S6 &&
+	  cube.piece(S3, 2, 0) == S6 && cube.piece(S5, 0, 0) == S6);
+}
 bool basic_r(Rubic &cube, AsciiOutput &output, int sleep_time,
 		   const map<string, TurnSequence> &memory,
 		   const map<string, TurnSequences> &memory2) {
@@ -493,6 +505,85 @@ void fill_cases(map<case_ptr, fptr> &cNr) {
   cNr[basic_reverse] = basic_reverse_r;
   cNr[basic_sideways] = basic_r;
   cNr[basic_1up] = basic_r;
+  cNr[basic_1up2]= basic_r;
+  cNr[basic_2up] = basic_r;
+  cNr[basic_0up] = basic_r;
+  cNr[basic_2up2]= basic_r;
+}
+
+bool middles_2side(const Rubic &cube) {
+  return (cube.piece(S1, 1, 0) != S6 && cube.piece(S1, 0, 1) != S6);
+}
+bool middles1_r(Rubic &cube, AsciiOutput &output, int sleep_time,
+				const map<string, TurnSequence> &memory,
+				const map<string, TurnSequences> &memory2) {
+  if (memory.find("rotate_middles") == memory.end()) {
+    return false;
+  }
+  animate(memory.at("rotate_middles"), cube, output, sleep_time);
+  return true;
+}
+
+bool middles_2side2(const Rubic &cube) {
+  return (cube.piece(S1, 1, 0) != S6 && cube.piece(S1, 1, 2) != S6);
+}
+bool middles1(const Rubic &cube) {
+  return (cube.piece(S3, 1, 0) == cube.piece(S2, 0, 0) &&
+		  (cube.piece(S2, 1, 0) != cube.piece(S2, 0, 0)) &&
+		  (cube.piece(S4, 1, 0) != cube.piece(S4, 0, 0)) &&
+		  side_of_one_color(cube, S6));
+}
+bool middles3(const Rubic &cube) {
+  return (cube.piece(S3, 1, 0) == cube.piece(S5, 0, 0) &&
+		  (cube.piece(S2, 1, 0) != cube.piece(S2, 0, 0)) &&
+		  (cube.piece(S4, 1, 0) != cube.piece(S4, 0, 0)) &&
+		  side_of_one_color(cube, S6));
+}
+bool middles2_r(Rubic &cube, AsciiOutput &output, int sleep_time,
+				const map<string, TurnSequence> &memory,
+				const map<string, TurnSequences> &memory2) {
+  if (memory2.find("rotate_middles") == memory2.end()) {
+    return false;
+  }
+  animate(memory2.at("rotate_middles"), cube, output, sleep_time);
+  return true;
+}
+
+bool middles2(const Rubic &cube) {
+  return (cube.piece(S3, 1, 0) == cube.piece(S4, 0, 0) &&
+		  (cube.piece(S2, 1, 0) != cube.piece(S2, 0, 0)) &&
+		  (cube.piece(S4, 1, 0) != cube.piece(S4, 0, 0)) &&
+		  side_of_one_color(cube, S6));
+}
+bool middles2_mirror_r(Rubic &cube, AsciiOutput &output, int sleep_time,
+				const map<string, TurnSequence> &memory,
+				const map<string, TurnSequences> &memory2) {
+  if (memory2.find("rotate_middles") == memory2.end()) {
+    return false;
+  }
+  animate(memory2.at("rotate_middles"), cube, output, sleep_time,false,true);
+  return true;
+}
+
+bool layer3_finished(const Rubic &cube) {
+  return layer_finished(cube, 0);
+}
+bool rotate_top_r(Rubic &cube, AsciiOutput &output, int sleep_time,
+				const map<string, TurnSequence> &memory,
+				const map<string, TurnSequences> &memory2) {
+  TurnVector turn;
+  turn.turns.push_back(SimpleTurn{A1, T1});
+  animate(turn, cube, output, sleep_time);
+  return true;
+}
+
+void fill_cases2(map<case_ptr, fptr> &cNr) {
+  cNr[middles_2side] = middles1_r;
+  cNr[middles_2side2]= middles2_r;
+  cNr[middles1] = middles2_mirror_r;
+  cNr[middles2] = middles2_r;
+  cNr[middles3] = middles2_mirror_r;
+  cNr[layer3_finished] = rotate_top_r;
 }
 
 bool layer3_corners2(Rubic &cube, AsciiOutput &output, int sleep_time,
@@ -504,11 +595,11 @@ bool layer3_corners2(Rubic &cube, AsciiOutput &output, int sleep_time,
   map<case_ptr, fptr> casesNreactions;
   fill_cases(casesNreactions);
   // match to cases, if not found, turn the cube
-  for (int i=0; i<3; i++) {
+  for (int i=0; i<4; i++) {
     for (const auto &one_case : casesNreactions) {
       if (one_case.first(cube)) {
-	one_case.second(cube, output, sleep_time, memory, memory2);
-	return true;
+		one_case.second(cube, output, sleep_time, memory, memory2);
+		return true;
       }
     }
     turn_cube(cube, output, sleep_time, memory, memory2);
@@ -519,6 +610,23 @@ bool layer3_corners2(Rubic &cube, AsciiOutput &output, int sleep_time,
 bool layer3_middles(Rubic &cube, AsciiOutput &output, int sleep_time,
 		    const map<string, TurnSequence> &memory,
 		    const map<string, TurnSequences> &memory2) {
+  if (memory.find("basic") == memory.end() ||
+	  memory.find("rotate_middles") == memory.end() ||
+	  memory2.find("rotate_middles") == memory2.end()) {
+    return false;
+  }
+  map<case_ptr, fptr> casesNreactions;
+  fill_cases2(casesNreactions);
+  // match to cases, if not found, turn the cube
+  for (int i=0; i<4; i++) {
+    for (const auto &one_case : casesNreactions) {
+      if (one_case.first(cube)) {
+		one_case.second(cube, output, sleep_time, memory, memory2);
+		return true;
+      }
+    }
+    turn_cube(cube, output, sleep_time, memory, memory2);
+  }
   return false;
 }
 
@@ -534,7 +642,7 @@ fptr figure_phase(Rubic &cube) {
     position c4 = find(cube, S1, S4);
     position c5 = find(cube, S1, S5);
     if (c2.side != S1 || c3.side != S1 || c4.side != S1 || c5.side != S1 ||
-	c2.x != 0 || c3.y != 2 || c4.x != 2 || c5.y != 0) {
+		c2.x != 0 || c3.y != 2 || c4.x != 2 || c5.y != 0) {
       return make_cross;
     }
     position c32 = find(cube, S1, S3, S2);
@@ -542,9 +650,9 @@ fptr figure_phase(Rubic &cube) {
     position c54 = find(cube, S1, S5, S4);
     position c25 = find(cube, S1, S2, S5);
     if (c32.side != S1 || c32.x != 0 || c32.y != 2 ||
-	c43.side != S1 || c43.x != 2 || c43.y != 2 ||
-	c54.side != S1 || c54.x != 2 || c54.y != 0 ||
-	c25.side != S1 || c25.x != 0 || c25.y != 0) {
+		c43.side != S1 || c43.x != 2 || c43.y != 2 ||
+		c54.side != S1 || c54.x != 2 || c54.y != 0 ||
+		c25.side != S1 || c25.x != 0 || c25.y != 0) {
       return place_corners;
     }
     return no_turns;
@@ -560,37 +668,37 @@ fptr figure_phase(Rubic &cube) {
       return layer2;
     } else {
       if (side == S1) {
-	return upside_down;
+		return upside_down;
       } else {
-	int i=0;
-	array<Side, 3> a32 {S6, S2, S3};
-	array<Side, 3> a54 {S6, S4, S5};
-	position c32;
-	do {
-	  c32 = find(cube, a32.at(i%3), a32.at((i+1)%3), a32.at((i+2)%3));
-	  i++;
-	} while(c32.side != S1);
-	
-	if (c32.x != 0 || c32.y != 2) {
-	  return turn_cube;
-	}
-	
-	position c54;
-	do {
-	  c54 = find(cube, a54.at(i%3), a54.at((i+1)%3), a54.at((i+2)%3));
-	  i++;
-	} while(c54.side != S1);
-	
-	if (c54.x == 0) {
-	  return layer3_corners1_1;
-	} else if (c54.y == 2) {
-	  return layer3_corners1_2;
-	} else if (cube.piece(S1, 0, 0) != S6 || cube.piece(S1, 2, 0) != S6 ||
-		   cube.piece(S1, 0, 2) != S6 || cube.piece(S1, 2, 2) != S6) {
-	  return layer3_corners2;
-	} else {
-	  return layer3_middles;
-	}
+		int i=0;
+		array<Side, 3> a32 {S6, S2, S3};
+		array<Side, 3> a54 {S6, S4, S5};
+		position c32;
+		do {
+		  c32 = find(cube, a32.at(i%3), a32.at((i+1)%3), a32.at((i+2)%3));
+		  i++;
+		} while(c32.side != S1);
+		
+		if (c32.x != 0 || c32.y != 2) {
+		  return turn_cube;
+		}
+		
+		position c54;
+		do {
+		  c54 = find(cube, a54.at(i%3), a54.at((i+1)%3), a54.at((i+2)%3));
+		  i++;
+		} while(c54.side != S1);
+		
+		if (c54.x == 0) {
+		  return layer3_corners1_1;
+		} else if (c54.y == 2) {
+		  return layer3_corners1_2;
+		} else if (cube.piece(S1, 0, 0) != S6 || cube.piece(S1, 2, 0) != S6 ||
+				   cube.piece(S1, 0, 2) != S6 || cube.piece(S1, 2, 2) != S6) {
+		  return layer3_corners2;
+		} else {
+		  return layer3_middles;
+		}
       }
     }
   }
